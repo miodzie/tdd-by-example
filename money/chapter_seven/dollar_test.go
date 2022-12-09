@@ -1,4 +1,4 @@
-package chapter_seven
+package chapter_six
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -17,8 +17,9 @@ import (
 // Equal object
 // ~5 CHF * 2 = 10 CHF~
 // Dollar/Franc Duplication
-// Common equals
+// ~Common equals~
 // Common times
+// ~Compare Francs with Dollars~
 
 func TestFrancMultiplication(t *testing.T) {
 	five := NewFranc(5)
@@ -37,4 +38,6 @@ func TestEquality(t *testing.T) {
 	assert.False(t, NewDollar(5).equals(NewDollar(6)))
 	assert.True(t, NewFranc(5).equals(NewFranc(5)))
 	assert.False(t, NewFranc(5).equals(NewFranc(6)))
+	assert.False(t, NewFranc(5).equals(NewDollar(5)))
+	assert.False(t, NewDollar(5).equals(NewFranc(5)))
 }
