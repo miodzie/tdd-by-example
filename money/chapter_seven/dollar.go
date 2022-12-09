@@ -1,11 +1,14 @@
 package chapter_six
 
+import "reflect"
+
 type Money interface {
 	Amount() int
 }
 
 type money struct {
-	amount int
+	amount     int
+	parentType Money
 }
 
 func (m money) Amount() int {
@@ -13,7 +16,8 @@ func (m money) Amount() int {
 }
 
 func (m money) equals(money Money) bool {
-	return money.Amount() == m.amount
+	return reflect.TypeOf(m.parentType).Name() == reflect.TypeOf(money).Name() &&
+		money.Amount() == m.amount
 }
 
 type Dollar struct {
@@ -21,14 +25,7 @@ type Dollar struct {
 }
 
 func NewDollar(amount int) Dollar {
-	return Dollar{money{amount: amount}}
-}
-
-// Because Go isn't really OO, we can't follow along the example exactly.
-// We have to add specific equals methods to each
-func (d Dollar) equals(money Money) bool {
-	_, isFranc := money.(Dollar)
-	return isFranc && d.amount == money.Amount()
+	return Dollar{money{amount: amount, parentType: Dollar{}}}
 }
 
 func (d Dollar) times(multiplier int) Dollar {
@@ -40,14 +37,7 @@ type Franc struct {
 }
 
 func NewFranc(amount int) Franc {
-	return Franc{money{amount: amount}}
-}
-
-// Because Go isn't really OO, we can't follow along the example exactly.
-// We have to add specific equals methods to each
-func (f Franc) equals(money Money) bool {
-	_, isFranc := money.(Franc)
-	return isFranc && f.amount == money.Amount()
+	return Franc{money{amount: amount, parentType: Franc{}}}
 }
 
 func (f Franc) times(multiplier int) Franc {
