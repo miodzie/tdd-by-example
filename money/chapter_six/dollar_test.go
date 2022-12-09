@@ -19,6 +19,7 @@ import (
 // Dollar/Franc Duplication
 // ~Common equals~
 // Common times
+// Compare Francs with Dollars
 
 func TestFrancMultiplication(t *testing.T) {
 	five := NewFranc(5)

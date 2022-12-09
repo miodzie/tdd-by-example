@@ -12,8 +12,8 @@ func (m money) Amount() int {
 	return m.amount
 }
 
-func (m money) times(multiplier int) Money {
-	return money{amount: m.amount * multiplier}
+func (m money) equals(money Money) bool {
+	return money.Amount() == m.amount
 }
 
 type Dollar struct {
@@ -24,8 +24,8 @@ func NewDollar(amount int) Dollar {
 	return Dollar{money{amount: amount}}
 }
 
-func (m Dollar) equals(money Money) bool {
-	return m.amount == money.Amount()
+func (d Dollar) times(multiplier int) Dollar {
+	return Dollar{money{amount: d.amount * multiplier}}
 }
 
 type Franc struct {
@@ -36,6 +36,6 @@ func NewFranc(amount int) Franc {
 	return Franc{money{amount: amount}}
 }
 
-func (m Franc) equals(money Money) bool {
-	return m.amount == money.Amount()
+func (f Franc) times(multiplier int) Franc {
+	return Franc{money{amount: f.amount * multiplier}}
 }
