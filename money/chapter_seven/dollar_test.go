@@ -1,4 +1,4 @@
-package chapter_six
+package chapter_seven
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -17,7 +17,7 @@ import (
 // Equal object
 // ~5 CHF * 2 = 10 CHF~
 // Dollar/Franc Duplication
-// ~Common equals~
+// Common equals
 // Common times
 
 func TestFrancMultiplication(t *testing.T) {

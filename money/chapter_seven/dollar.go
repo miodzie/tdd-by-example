@@ -1,4 +1,4 @@
-package chapter_six
+package chapter_seven
 
 type Money interface {
 	Amount() int
@@ -16,6 +16,10 @@ func (m money) times(multiplier int) Money {
 	return money{amount: m.amount * multiplier}
 }
 
+func (m money) equals(money Money) bool {
+	return m.amount == money.Amount()
+}
+
 type Dollar struct {
 	money
 }
@@ -24,18 +28,10 @@ func NewDollar(amount int) Dollar {
 	return Dollar{money{amount: amount}}
 }
 
-func (m Dollar) equals(money Money) bool {
-	return m.amount == money.Amount()
-}
-
 type Franc struct {
 	money
 }
 
 func NewFranc(amount int) Franc {
 	return Franc{money{amount: amount}}
-}
-
-func (m Franc) equals(money Money) bool {
-	return m.amount == money.Amount()
 }
