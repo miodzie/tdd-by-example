@@ -5,8 +5,14 @@ namespace App;
 class Dollar extends Money
 {
 	
+	public function __construct(protected int $amount)
+	{
+		$this->currency = "USD";
+	}
+	
 	public function times(int $multiplier): Money
 	{
 		return new self($this->amount * $multiplier);
 	}
+	
 }

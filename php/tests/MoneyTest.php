@@ -10,14 +10,14 @@ use PHPUnit\Framework\TestCase;
 // $5 + 10 CHF = $10 if rate is 2:1
 // ~$5 * 2 = $10~
 // ~Make "amount" private~ // It was already private per Go, but whatever.
-// ~dollar side effects?~
+// ~Dollar side effects?~
 // Money rounding?
 // ~Equals()~
 // hashCode()
 // Equal null
 // Equal object
 // ~5 CHF * 2 = 10 CHF~
-// dollar/franc Duplication
+// Dollar/franc Duplication
 // ~Common Equals~
 // Common times
 // ~Compare Francs with Dollars~
@@ -25,6 +25,12 @@ use PHPUnit\Framework\TestCase;
 // Delete TestFrancMultiplication?
 class MoneyTest extends TestCase
 {
+	public function testCurrency()
+	{
+		$this->assertEquals("USD", Money::dollar(1)->currency());
+		$this->assertEquals("CHF", Money::franc(1)->currency());
+	}
+	
 	public function testMultiplication()
 	{
 		$five = Money::dollar(5);
@@ -34,9 +40,9 @@ class MoneyTest extends TestCase
 	
 	public function testFrancMultiplication()
 	{
-		$five = new Franc(5);
-		$this->assertTrue((new Franc(10))->equals($five->times(2)));
-		$this->assertTrue((new Franc(15))->equals($five->times(3)));
+		$five = Money::franc(5);
+		$this->assertTrue(Money::franc(10)->equals($five->times(2)));
+		$this->assertTrue(Money::franc(15)->equals($five->times(3)));
 	}
 	
 	public function testEquality()
@@ -44,9 +50,11 @@ class MoneyTest extends TestCase
 		$this->assertTrue(Money::dollar(5)->equals(Money::dollar(5)));
 		$this->assertFalse(Money::dollar(5)->equals(Money::dollar(6)));
 		
-		$this->assertTrue((new Franc(5))->equals(new Franc(5)));
-		$this->assertFalse((new Franc(5))->equals(new Franc(6)));
-		$this->assertFalse((new Franc(5))->equals(Money::dollar(5)));
-		$this->assertFalse((Money::dollar(5))->equals(new Franc(5)));
+		$this->assertTrue(Money::franc(5)->equals(Money::franc(5)));
+		$this->assertFalse(Money::franc(5)->equals(Money::franc(6)));
+		$this->assertFalse(Money::franc(5)->equals(Money::dollar(5)));
+		$this->assertFalse(Money::dollar(5)->equals(Money::franc(5)));
 	}
+	
+	
 }
