@@ -1,0 +1,19 @@
+{
+    "name": "miodzie/tdd-by-example",
+    "description": "TDD By Example follow along.",
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "miodzie",
+            "email": "miodzie@protonmail.com"
+        }
+    ]
+}
