@@ -4,13 +4,15 @@ namespace App;
 
 abstract class Money
 {
-	protected string $currency;
+	public function __construct(protected int $amount, protected string $currency)
+	{
+	}
 	
 	abstract public function times(int $multiplier): Money;
 	
 	public static function dollar(int $amount): Money
 	{
-		return new Dollar($amount);
+		return new Dollar($amount, "USD");
 	}
 	
 	public static function franc(int $amount): Money
