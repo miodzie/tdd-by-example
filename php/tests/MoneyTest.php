@@ -19,12 +19,19 @@ use PHPUnit\Framework\TestCase;
 // ~5 CHF * 2 = 10 CHF~
 // Dollar/franc Duplication
 // ~Common Equals~
-// Common times
+// ~Common times~
 // ~Compare Francs with Dollars~
 // ~Currency?~
 // Delete TestFrancMultiplication?
+
 class MoneyTest extends TestCase
 {
+	public function testDifferentClassEquality()
+	{
+		$money = new Money(10, 'CHF');
+		$this->assertTrue($money->equals(new Franc(10, 'CHF')));
+	}
+	
 	public function testCurrency()
 	{
 		$this->assertEquals("USD", Money::dollar(1)->currency());
