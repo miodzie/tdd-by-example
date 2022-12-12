@@ -17,21 +17,15 @@ use PHPUnit\Framework\TestCase;
 // Equal null
 // Equal object
 // ~5 CHF * 2 = 10 CHF~
-// Dollar/franc Duplication
+// ~Dollar/Franc Duplication~
 // ~Common Equals~
 // ~Common times~
 // ~Compare Francs with Dollars~
 // ~Currency?~
-// Delete TestFrancMultiplication?
+// ~Delete TestFrancMultiplication?~
 
 class MoneyTest extends TestCase
 {
-	public function testDifferentClassEquality()
-	{
-		$money = new Money(10, 'CHF');
-		$this->assertTrue($money->equals(new Franc(10, 'CHF')));
-	}
-	
 	public function testCurrency()
 	{
 		$this->assertEquals("USD", Money::dollar(1)->currency());
@@ -45,22 +39,11 @@ class MoneyTest extends TestCase
 		$this->assertTrue(Money::dollar(15)->equals($five->times(3)));
 	}
 	
-	public function testFrancMultiplication()
-	{
-		$five = Money::franc(5);
-		$this->assertTrue(Money::franc(10)->equals($five->times(2)));
-		$this->assertTrue(Money::franc(15)->equals($five->times(3)));
-	}
-	
 	public function testEquality()
 	{
 		$this->assertTrue(Money::dollar(5)->equals(Money::dollar(5)));
 		$this->assertFalse(Money::dollar(5)->equals(Money::dollar(6)));
-		
-		$this->assertTrue(Money::franc(5)->equals(Money::franc(5)));
-		$this->assertFalse(Money::franc(5)->equals(Money::franc(6)));
 		$this->assertFalse(Money::franc(5)->equals(Money::dollar(5)));
-		$this->assertFalse(Money::dollar(5)->equals(Money::franc(5)));
 	}
 	
 	
