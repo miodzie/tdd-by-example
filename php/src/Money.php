@@ -4,19 +4,18 @@ namespace App;
 
 class Money implements Expression
 {
-	public function __construct(protected int $amount, protected string $currency)
+	public function __construct(public int $amount, public string $currency)
 	{
 	}
 	
-	
 	public static function dollar(int $amount): Money
 	{
-		return new Money($amount, "USD");
+		return new Money($amount, 'USD');
 	}
 	
 	public static function franc(int $amount): Money
 	{
-		return new Money($amount, "CHF");
+		return new Money($amount, 'CHF');
 	}
 	
 	public function times(int $multiplier): Money
@@ -37,6 +36,28 @@ class Money implements Expression
 	
 	public function plus(Money $added): Expression
 	{
-		return new Money($this->amount + $added->amount, $this->currency);
+		return new Sum($this, $added);
+	}
+	
+	
+	public function reduce(string $to): Money
+	{
+		return $this;
+	}
+	
+	// This was for Chapter 13, casting Expressions to Money. Because PHP doesn't have class casting.
+	// Leaving it for help in a possible follow along for others.
+	public static function cast($source): self
+	{
+		$destination = new self(1, "potato");
+		$sourceReflection = new \ReflectionObject($source);
+		$sourceProperties = $sourceReflection->getProperties();
+		foreach ($sourceProperties as $sourceProperty) {
+			$name = $sourceProperty->getName();
+			$destination->{$name} = $source->$name;
+			
+		}
+		
+		return $destination;
 	}
 }
