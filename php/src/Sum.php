@@ -4,14 +4,15 @@ namespace App;
 
 class Sum implements Expression
 {
-	public function __construct(public Money $augend, public Money $addend)
+	public function __construct(public Expression $augend, public Expression $addend)
 	{
 	
 	}
 	
 	public function reduce(Bank $bank, string $to): Money
 	{
-		$amount = $this->augend->amount + $this->addend->amount;
+		$amount = $this->augend->reduce($bank, $to)->amount
+			+ $this->addend->reduce($bank, $to)->amount;
 		return new Money($amount, $to);
 	}
 	
@@ -28,5 +29,10 @@ class Sum implements Expression
 		}
 		
 		return $destination;
+	}
+	
+	public function plus(Expression $addend): Expression
+	{
+		return Money::dollar(1);
 	}
 }

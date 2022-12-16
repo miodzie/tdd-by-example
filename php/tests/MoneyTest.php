@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection ALL */
+declare(strict_types=1);
 
 namespace Tests;
 
@@ -8,15 +9,27 @@ use App\Sum;
 use PHPUnit\Framework\TestCase;
 
 // TODO/Stories from book: (~<story>~ indicates completed)
-// $5 + 10 CHF = $10 if rate is 2:1
+// ~$5 + 10 CHF = $10 if rate is 2:1~
 // ~$5 + $5 = $10~
 // Return Money from $5 + $5
 // ~Bank.reduce(Money)~
 // ~Reduce Money with conversion~
 // ~Reduce(Bank, String)~
+// Sum.plus
+// Expression.times
 
 class MoneyTest extends TestCase
 {
+	public function testMixedAddition()
+	{
+		$fiveBucks = Money::dollar(5);
+		$tenFrancs = Money::franc(10);
+		$bank = new Bank();
+		$bank->addRate("CHF", "USD", 2);
+		$result = $bank->reduce($fiveBucks->plus($tenFrancs), "USD");
+		$this->assertEquals(Money::dollar(10), $result);
+	}
+	
 	public function testIdentityRate()
 	{
 	   $this->assertEquals(1, (new Bank())->rate("USD", "USD"));
