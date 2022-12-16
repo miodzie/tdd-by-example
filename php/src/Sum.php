@@ -16,6 +16,16 @@ class Sum implements Expression
 		return new Money($amount, $to);
 	}
 	
+	public function plus(Expression $addend): Expression
+	{
+		return new Sum($this, $addend);
+	}
+	
+	public function times(int $multiplier): Expression
+	{
+		return new Sum($this->augend->times($multiplier), $this->addend->times($multiplier));
+	}
+	
 	// This was for Chapter 13, casting Expressions to Sums. Because PHP doesn't have class casting.
 	// Leaving it for help in a possible follow along for others.
 	public static function cast($source): self
@@ -29,10 +39,5 @@ class Sum implements Expression
 		}
 		
 		return $destination;
-	}
-	
-	public function plus(Expression $addend): Expression
-	{
-		return Money::dollar(1);
 	}
 }

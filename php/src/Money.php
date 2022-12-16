@@ -18,9 +18,20 @@ class Money implements Expression
 		return new Money($amount, 'CHF');
 	}
 	
+	public function reduce(Bank $bank, string $to): Money
+	{
+		$rate = $bank->rate($this->currency, $to);
+		return new Money($this->amount / $rate, $to);
+	}
+	
 	public function times(int $multiplier): Expression
 	{
 		return new Money($this->amount * $multiplier, $this->currency);
+	}
+	
+	public function plus(Expression $added): Expression
+	{
+		return new Sum($this, $added);
 	}
 	
 	public function equals(Money $money): bool
@@ -29,21 +40,10 @@ class Money implements Expression
 			$this->currency() == $money->currency();
 	}
 	
+	
 	public function currency(): string
 	{
 		return $this->currency;
-	}
-	
-	public function plus(Expression $added): Expression
-	{
-		return new Sum($this, $added);
-	}
-	
-	
-	public function reduce(Bank $bank, string $to): Money
-	{
-		$rate = $bank->rate($this->currency, $to);
-		return new Money($this->amount / $rate, $to);
 	}
 	
 	// This was for Chapter 13, casting Expressions to Money. Because PHP doesn't have class casting.

@@ -15,31 +15,55 @@ use PHPUnit\Framework\TestCase;
 // ~Bank.reduce(Money)~
 // ~Reduce Money with conversion~
 // ~Reduce(Bank, String)~
-// Sum.plus
-// Expression.times
+// ~Sum.plus~
+// ~Expression.times~
 
 class MoneyTest extends TestCase
 {
+	private $bank;
+	
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->bank = new Bank();
+		$this->bank->addRate("CHF", "USD", 2);
+	}
+	
+	
+	public function testSumTimes()
+	{
+		$fiveBucks = Money::dollar(5);
+		$tenFrancs = Money::franc(10);
+		$sum = (new Sum($fiveBucks, $tenFrancs))->times(2);
+		$result = $this->bank->reduce($sum, "USD");
+		$this->assertEquals(Money::dollar(20), $result);
+	}
+	
+	public function testSumPlusMoney()
+	{
+		$fiveBucks = Money::dollar(5);
+		$tenFrancs = Money::franc(10);
+		$sum = (new Sum($fiveBucks, $tenFrancs))->plus($fiveBucks);
+		$result = $this->bank->reduce($sum, "USD");
+		$this->assertEquals(Money::dollar(15), $result);
+	}
+	
 	public function testMixedAddition()
 	{
 		$fiveBucks = Money::dollar(5);
 		$tenFrancs = Money::franc(10);
-		$bank = new Bank();
-		$bank->addRate("CHF", "USD", 2);
-		$result = $bank->reduce($fiveBucks->plus($tenFrancs), "USD");
+		$result = $this->bank->reduce($fiveBucks->plus($tenFrancs), "USD");
 		$this->assertEquals(Money::dollar(10), $result);
 	}
 	
 	public function testIdentityRate()
 	{
-	   $this->assertEquals(1, (new Bank())->rate("USD", "USD"));
+		$this->assertEquals(1, (new Bank())->rate("USD", "USD"));
 	}
 	
 	public function testReduceMoneyDifferentCurrency()
 	{
-		$bank = new Bank();
-		$bank->addRate("CHF", "USD", 2);
-		$result = $bank->reduce(Money::franc(2), "USD");
+		$result = $this->bank->reduce(Money::franc(2), "USD");
 		$this->assertEquals(Money::dollar(1), $result);
 	}
 	
