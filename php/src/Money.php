@@ -40,9 +40,10 @@ class Money implements Expression
 	}
 	
 	
-	public function reduce(string $to): Money
+	public function reduce(Bank $bank, string $to): Money
 	{
-		return $this;
+		$rate = $bank->rate($this->currency, $to);
+		return new Money($this->amount / $rate, $to);
 	}
 	
 	// This was for Chapter 13, casting Expressions to Money. Because PHP doesn't have class casting.

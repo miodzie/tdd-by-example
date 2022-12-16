@@ -3,22 +3,33 @@
 namespace Tests;
 
 use App\Bank;
-use App\Franc;
 use App\Money;
 use App\Sum;
-use PhpParser\Node\Expr\BinaryOp\Equal;
-use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
 
 // TODO/Stories from book: (~<story>~ indicates completed)
 // $5 + 10 CHF = $10 if rate is 2:1
-// $5 + $5 = $10
+// ~$5 + $5 = $10~
 // Return Money from $5 + $5
 // ~Bank.reduce(Money)~
-// Reduce(Bank, String)
+// ~Reduce Money with conversion~
+// ~Reduce(Bank, String)~
 
 class MoneyTest extends TestCase
 {
+	public function testIdentityRate()
+	{
+	   $this->assertEquals(1, (new Bank())->rate("USD", "USD"));
+	}
+	
+	public function testReduceMoneyDifferentCurrency()
+	{
+		$bank = new Bank();
+		$bank->addRate("CHF", "USD", 2);
+		$result = $bank->reduce(Money::franc(2), "USD");
+		$this->assertEquals(Money::dollar(1), $result);
+	}
+	
 	public function testReduceMoney()
 	{
 		$bank = new Bank();
@@ -39,10 +50,8 @@ class MoneyTest extends TestCase
 		// The first argument to addition is called the _augend_. neat.
 		$five = Money::dollar(5);
 		$result = $five->plus($five);
-		// Maybe I should have just done this in Java...
-		$sum = Sum::cast($result);
-		$this->assertEquals($five, $sum->augend);
-		$this->assertEquals($five, $sum->addend);
+		$this->assertEquals($five, $result->augend);
+		$this->assertEquals($five, $result->addend);
 	}
 	
 	public function testSimpleAddition()
